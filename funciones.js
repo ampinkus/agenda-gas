@@ -16,3 +16,12 @@ function doGet() {
 function obtenerDatosHTML(nombre) {
   return HtmlService.createHtmlOutputFromFile(nombre).getContent();
 }    
+
+// para obtener los contactos desde la hoja de cálculo
+function obtenerContactos() {
+  // accedo a la hoja
+  hoja = SpreadsheetApp.openById("1GrgfB8VLFqWA8UGEd8oIhVvuqcgZe1cm0SzTeGHcPz8").getActiveSheet();
+  // obtengo los datos de la hoja
+  let datos = hoja.getDataRange().getValues();
+  return  datos;
+}

@@ -1,5 +1,50 @@
 <!-- Archivo de JS -->
 <script>
+    function crearTablaContactos() {
+        google.script.run.withSuccessHandler(function(obj) {
+            // Creamos una tabla con HTML
+            let tabla = document.createElement('table');
+            let tablaBody = document.createElement('tbody');
+            let tablaHeader = document.createElement('thead');
 
+            Array.from(obj).forEach((filaActual, i) => {
+                let fila = document.createElement('tr');
 
+                filaActual.forEach(celdaActual => {
+                    let celda;
+                    if (i === 0) {
+                        celda = document.createElement('th'); // Primera fila como encabezado
+                    } else {
+                        celda = document.createElement('td');
+                    }
+                    celda.textContent = celdaActual;
+                    fila.appendChild(celda);
+                });
+
+                if (i === 0) {
+                    tablaHeader.appendChild(fila); // Agregar fila al encabezado
+                } else {
+                    tablaBody.appendChild(fila); // Agregar fila al cuerpo
+                }
+            });
+
+            // Agregar el encabezado y cuerpo a la tabla
+            tabla.appendChild(tablaHeader);
+            tabla.appendChild(tablaBody);
+
+            // Agregar clases a la cabecera
+            tablaHeader.classList.add('table-dark');
+
+            // Agregar clases a la tabla
+            tabla.classList.add('table', 'table-striped', 'border', 'border-3', 'table-success');
+
+            // Insertar la tabla en el DOM
+            let contenedor = document.getElementById('divContactos');
+            contenedor.innerHTML = ""; // Limpiar contenido previo
+            contenedor.appendChild(tabla);
+        }).obtenerContactos(); // Ahora está bien encadenado
+    }
 </script>
+
+<!-- Contenedor donde se insertará la tabla -->
+<button onclick="crearTablaContactos()">Cargar Contactos</button>
