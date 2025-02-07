@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Pegamos el contenido del archivo CSS usando la funcion que creamos para cargar scriptlets -->
+    <?!= obtenerDatosHTML('css') ?>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Incluimos solo los archivos individuales sin agregar nada mas a este página -->
+    <!-- Pegamos el contenido del archivo header usando la funcion que creamos para cargar scriptlets -->
+    <?!= obtenerDatosHTML('header') ?>
+    
+    <!-- Pegamos el contenido del archivo main usando la funcion que creamos para cargar scriptlets -->
+    <?!= obtenerDatosHTML('main') ?>
+    
+    <!-- Pegamos el contenido del archivo footer usando la funcion que creamos para cargar scriptlets -->
+    <?!= obtenerDatosHTML('footer') ?>
+    
+    <!-- Pegamos el contenido del archivo JS usando la funcion que creamos para cargar scriptlets -->
+    <?!= obtenerDatosHTML('js') ?>
+
+</body>
+</html

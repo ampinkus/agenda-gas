@@ -1,0 +1,27 @@
+# Ignorar carpetas innecesarias
+node_modules/
+dist/
+build/
+.vscode/
+.git/
+
+# Ignorar archivos temporales y de sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de configuración de editores
+*.log
+*.swp
+*.swo
+
+# Ignorar el archivo README si no quieres subirlo
+README.md
+
+# Excluir paquetes de dependencias
+package-lock.json
+yarn.lock
+
+# No ignorar appsscript.json (IMPORTANTE)
+# Si lo excluyes, el script puede no funcionar correctamente
+# NO agregues "appsscript.json" aquí
+
