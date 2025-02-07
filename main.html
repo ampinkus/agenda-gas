@@ -1,12 +1,36 @@
 <!-- Archivo principal de la página WEB -->
 <main>
   <!-- Botones -->
-   <div class="d-flex justify-content-center mb-4">
-    <button class="btn btn-success" m-3 onclick="crearTablaContactos()">Mostrar contactos</button>
+  <div class="d-flex justify-content-center mb-4">
+    <button class="btn btn-success m-3" onclick="crearTablaContactos()">
+      Mostrar contactos
+    </button>
   </div>
 
   <!-- Tabla de contactos -->
-   <div class="container sm mb-4 w-50" id="divContactos">
+  <div class="container sm mb-4 w-50" id="divContactos"></div>
 
-   </div>
+  <!-- Notificaciones con toast de Bootstrap-->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <!-- Toast -->
+    <div
+      id="notificacion"
+      class="toast align-items-center text-white border-0"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <div class="toast-header p-2">
+        <i id="icono-notificacion" class="bi"></i>
+        <strong class="me-auto ms-2" id="tituloNotificacion"></strong>
+        <button
+          type="button"
+          class="btn-close m-2"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="toast-body" id="mensajeNotificacion"></div>
+    </div>
+  </div>
 </main>

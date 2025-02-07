@@ -1,49 +1,94 @@
 <!-- Archivo de JS -->
 <script>
-    function crearTablaContactos() {
-        google.script.run.withSuccessHandler(function(obj) {
-            // Creamos una tabla con HTML
-            let tabla = document.createElement('table');
-            let tablaBody = document.createElement('tbody');
-            let tablaHeader = document.createElement('thead');
+  function crearTablaContactos() {
+    google.script.run
+      .withSuccessHandler(crearTablaContactosCorrectamente)
+      .withFailureHandler(crearTablaContactosError)
+      .obtenerContactos();
+  }
 
-            Array.from(obj).forEach((filaActual, i) => {
-                let fila = document.createElement('tr');
+  function crearTablaContactosCorrectamente(obj) {
+    // Creamos una tabla con HTML
+    let tabla = document.createElement("table");
+    let tablaBody = document.createElement("tbody");
+    let tablaHeader = document.createElement("thead");
 
-                filaActual.forEach(celdaActual => {
-                    let celda;
-                    if (i === 0) {
-                        celda = document.createElement('th'); // Primera fila como encabezado
-                    } else {
-                        celda = document.createElement('td');
-                    }
-                    celda.textContent = celdaActual;
-                    fila.appendChild(celda);
-                });
+    Array.from(obj).forEach((filaActual, i) => {
+      let fila = document.createElement("tr");
 
-                if (i === 0) {
-                    tablaHeader.appendChild(fila); // Agregar fila al encabezado
-                } else {
-                    tablaBody.appendChild(fila); // Agregar fila al cuerpo
-                }
-            });
+      filaActual.forEach((celdaActual) => {
+        let celda;
+        if (i === 0) {
+          celda = document.createElement("th"); // Primera fila como encabezado
+        } else {
+          celda = document.createElement("td");
+        }
+        celda.textContent = celdaActual;
+        fila.appendChild(celda);
+      });
 
-            // Agregar el encabezado y cuerpo a la tabla
-            tabla.appendChild(tablaHeader);
-            tabla.appendChild(tablaBody);
+      if (i === 0) {
+        tablaHeader.appendChild(fila); // Agregar fila al encabezado
+      } else {
+        tablaBody.appendChild(fila); // Agregar fila al cuerpo
+      }
+    });
 
-            // Agregar clases a la cabecera
-            tablaHeader.classList.add('table-dark');
+    // Agregar el encabezado y cuerpo a la tabla
+    tabla.appendChild(tablaHeader);
+    tabla.appendChild(tablaBody);
 
-            // Agregar clases a la tabla
-            tabla.classList.add('table', 'table-striped', 'border', 'border-3', 'table-success');
+    // Agregar clases a la cabecera
+    tablaHeader.classList.add("table-dark");
 
-            // Insertar la tabla en el DOM
-            let contenedor = document.getElementById('divContactos');
-            contenedor.innerHTML = ""; // Limpiar contenido previo
-            contenedor.appendChild(tabla);
-        }).obtenerContactos(); // Ahora está bien encadenado
+    // Agregar clases a la tabla
+    tabla.classList.add(
+      "table",
+      "table-striped",
+      "border",
+      "border-3",
+      "table-success"
+    );
+
+    // Insertar la tabla en el DOM
+    let contenedor = document.getElementById("divContactos");
+    contenedor.innerHTML = ""; // Limpiar contenido previo
+    contenedor.appendChild(tabla);
+
+    // Mostrar notificación de éxito
+    crearNotificacion(1, "Contactos obtenidos correctamente", "Éxito");
+  }
+
+  function crearTablaContactosError() {
+    // Mostrar notificación de error
+    crearNotificacion(0, "Error al obtener los contactos", "Error");
+  }
+
+  function crearNotificacion(tipo, mensaje, titulo) {
+    let mensajeNotificacion = document.getElementById("mensajeNotificacion");
+    let tituloNotificacion = document.getElementById("tituloNotificacion");
+    let elementoNotificacion = document.getElementById("notificacion");
+    let iconoNotificacion = document.getElementById("icono-notificacion");
+    let notificacion = bootstrap.Toast.getOrCreateInstance(elementoNotificacion);
+
+    // Establecer mensaje y título
+    mensajeNotificacion.textContent = mensaje;
+    tituloNotificacion.textContent = titulo;
+
+    // Definir estilos según el tipo de notificación
+    if (tipo === 1) {
+      // Notificación de éxito
+      iconoNotificacion.className = "bi bi-check-circle-fill text-success";
+      elementoNotificacion.classList.add("bg-success", "text-white");
+    } else {
+      // Notificación de error
+      iconoNotificacion.className = "bi bi-exclamation-triangle-fill text-danger";
+      elementoNotificacion.classList.add("bg-danger", "text-white");
     }
+
+    // Mostrar la notificación
+    notificacion.show();
+  }
 </script>
 
 <!-- Contenedor donde se insertará la tabla -->
