@@ -1,5 +1,10 @@
 <!-- Archivo de JS -->
 <script>
+  // Constantes
+  const NOTIFICACION_OK = 1
+  const NOTIFICACION_DANGER = 2
+  const NOTIFICACION_WARNING = 3
+
   function crearTablaContactos() {
     google.script.run
       .withSuccessHandler(crearTablaContactosCorrectamente)
@@ -56,15 +61,16 @@
     contenedor.appendChild(tabla);
 
     // Mostrar notificación de éxito
-    crearNotificacion(1, "Contactos obtenidos correctamente", "Éxito");
+    crearNotificacion(NOTIFICACION_OK, "Contactos obtenidos correctamente", "Éxito");
   }
 
   function crearTablaContactosError() {
     // Mostrar notificación de error
-    crearNotificacion(0, "Error al obtener los contactos", "Error");
+    crearNotificacion(NOTIFICACION_DANGER, "Error al obtener los contactos", "Error");
   }
 
   function crearNotificacion(tipo, mensaje, titulo) {
+    // Obtener datos
     let mensajeNotificacion = document.getElementById("mensajeNotificacion");
     let tituloNotificacion = document.getElementById("tituloNotificacion");
     let elementoNotificacion = document.getElementById("notificacion");
@@ -76,15 +82,27 @@
     tituloNotificacion.textContent = titulo;
 
     // Definir estilos según el tipo de notificación
-    if (tipo === 1) {
-      // Notificación de éxito
-      iconoNotificacion.className = "bi bi-check-circle-fill text-success";
-      elementoNotificacion.classList.add("bg-success", "text-white");
-    } else {
-      // Notificación de error
-      iconoNotificacion.className = "bi bi-exclamation-triangle-fill text-danger";
-      elementoNotificacion.classList.add("bg-danger", "text-white");
+    switch(tipo) {
+      case NOTIFICACION_OK:
+        iconoNotificacion.className = "";
+        elementoNotificacion.classList.add("bi", "bi-check2-square");
+        elementoNotificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--color-verde-oscuro");
+        break;
+
+      case NOTIFICACION_DANGER:
+        iconoNotificacion.className = "";
+        elementoNotificacion.classList.add("bi", "bi-bug");
+        elementoNotificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--color-rojo-oscuro");
+        break;
+
+      case NOTIFICACION_WARNING:
+        iconoNotificacion.className = "";
+        elementoNotificacion.classList.add("bi", "bi-exclamation-square");
+        elementoNotificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--color-amarillo-oscuro");
+        break;
     }
+
+
 
     // Mostrar la notificación
     notificacion.show();
