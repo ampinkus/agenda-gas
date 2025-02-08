@@ -1,10 +1,5 @@
 <!-- Archivo de JS -->
 <script>
-  // Constantes
-  const NOTIFICACION_OK = 1
-  const NOTIFICACION_DANGER = 2
-  const NOTIFICACION_WARNING = 3
-
   function crearTablaContactos() {
     google.script.run
       .withSuccessHandler(crearTablaContactosCorrectamente)
@@ -62,51 +57,76 @@
     contenedor.appendChild(tabla);
 
     // Mostrar notificación de éxito
-    crearNotificacion(NOTIFICACION_OK, "Contactos obtenidos correctamente", "Éxito");
+    crearNotificacionOK("Contactos obtenidos correctamente", "Éxito");
   }
 
   function crearTablaContactosError() {
     // Mostrar notificación de error
-    crearNotificacion(NOTIFICACION_DANGER, "Error al obtener los contactos", "Error");
+    crearNotificacionError("Error al obtener los contactos", "Error");
   }
 
-  function crearNotificacion(tipo, mensaje, titulo) {
-    // Obtener datos
-    let mensajeNotificacion = document.getElementById("mensajeNotificacion");
-    let tituloNotificacion = document.getElementById("tituloNotificacion");
+  // No se recomienda tener funciones con mas de 3 argumentos porque se dificultan la lectura.
+  // vamos a eliminar el tipo de la función y crear una funcion independiente para cada tipo de notificación
+  function crearNotificacion(mensaje, titulo) {
+    // Incluimos solo los elementos comunes a cada notificación: el mensaje y el título
+    document.getElementById("mensajeNotificacion").textContent = mensaje;
+    document.getElementById("tituloNotificacion").textContent = titulo;
     let elementoNotificacion = document.getElementById("notificacion");
-    let iconoNotificacion = document.getElementById("icono-notificacion");
-    let notificacion = bootstrap.Toast.getOrCreateInstance(elementoNotificacion);
 
-    // Establecer mensaje y título
-    mensajeNotificacion.textContent = mensaje;
-    tituloNotificacion.textContent = titulo;
+    // Se actualizan los cambios ANTES de mostrar la notificación
+    let notificacion =
+      bootstrap.Toast.getOrCreateInstance(elementoNotificacion);
 
-    // Definir estilos según el tipo de notificación
-    switch(tipo) {
-      case NOTIFICACION_OK:
-        iconoNotificacion.className = "";
-        elementoNotificacion.classList.add("bi", "bi-check2-square");
-        elementoNotificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--color-verde-oscuro");
-        break;
+    // Se aseguran los cambios antes de mostrar la notificación
+    setTimeout(() => {
+      notificacion.show();
+    }, 100);
+  }
 
-      case NOTIFICACION_DANGER:
-        iconoNotificacion.className = "";
-        elementoNotificacion.classList.add("bi", "bi-bug");
-        elementoNotificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--color-rojo-oscuro");
-        break;
+  // Notificación de éxito
+  function crearNotificacionOK(mensaje, titulo) {
+    crearNotificacion(mensaje, titulo);
+    crearIconoNotificacionOK();
+    crearColorNotificacion("#239b56"); // Verde oscuro
+  }
 
-      case NOTIFICACION_WARNING:
-        iconoNotificacion.className = "";
-        elementoNotificacion.classList.add("bi", "bi-exclamation-square");
-        elementoNotificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue("--color-amarillo-oscuro");
-        break;
-    }
+  // Notificación de error
+  function crearNotificacionError(mensaje, titulo) {
+    crearNotificacion(mensaje, titulo);
+    crearIconoNotificacionError();
+    crearColorNotificacion("#c0392b"); // Rojo oscuro
+  }
 
+  // Notificación de advertencia
+  function crearNotificacionAdvertencia(mensaje, titulo) {
+    crearNotificacion(mensaje, titulo);
+    crearIconoNotificacionAdvertencia();
+    crearColorNotificacion("#d4ac0d"); // Amarillo oscuro
+  }
 
+  // Funciones para cambiar el icono de la notificación
+  function crearIconoNotificacionOK() {
+    let icono = document.getElementById("icono-notificacion");
+    icono.className = ""; // Limpiar icono anterior
+    icono.classList.add("bi", "bi-check-circle-fill", "text-dark");
+  }
 
-    // Mostrar la notificación
-    notificacion.show();
+  function crearIconoNotificacionError() {
+    let icono = document.getElementById("icono-notificacion");
+    icono.className = "";
+    icono.classList.add("bi", "bi-bug-fill", "text-dark");
+  }
+
+  function crearIconoNotificacionAdvertencia() {
+    let icono = document.getElementById("icono-notificacion");
+    icono.className = "";
+    icono.classList.add("bi", "bi-exclamation-triangle-fill", "text-dark");
+  }
+
+  // Función para cambiar el color de fondo de la notificación
+  function crearColorNotificacion(color) {
+    let elementoNotificacion = document.getElementById("notificacion");
+    elementoNotificacion.style.backgroundColor = color;
   }
 </script>
 
